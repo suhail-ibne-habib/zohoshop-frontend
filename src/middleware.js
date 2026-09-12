@@ -12,10 +12,11 @@ export default clerkMiddleware(async (auth, req) => {
       return authObj.redirectToSignIn({ returnBackUrl: req.url });
     }
 
-    // Signed in but wrong role → redirect to homepage
-    const userRole = authObj?.sessionClaims?.role?.role;
-    console.log(userRole)
-    if (userRole !== 'saler' && userRole !== 'admin') {
+    // Signed in check: extract role safely from session claims
+    const userRole = authObj?.sessionClaims?.role || authObj?.sessionClaims?.publicMetadata?.role || authObj?.sessionClaims?.metadata?.role;
+    
+    // If role is present and not saler/admin, redirect to homepage
+    if (userRole && userRole !== 'saler' && userRole !== 'admin') {
       return NextResponse.redirect(new URL('/', req.url));
     }
   }
