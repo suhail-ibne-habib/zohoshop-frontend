@@ -28,25 +28,34 @@ export default function ProductsPage() {
   const [onlyOnSale, setOnlyOnSale] = useState(false);
   const [sortBy, setSortBy] = useState('newest');
 
-  const fetchProducts = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
-      const res = await axios.get(`${baseUrl}/product/all`);
-      if (res.data?.data) {
-        setProducts(res.data.data);
-      }
-    } catch (err) {
-      console.error('Error fetching published products:', err);
-      setError(err.response?.data?.message || 'Failed to load products. Please check server connection.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    fetchProducts();
+    let ignore = false;
+
+    const loadProducts = async () => {
+      setError(null);
+      try {
+        const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
+        const res = await axios.get(`${baseUrl}/product/all`);
+        if (!ignore && res.data?.data) {
+          setProducts(res.data.data);
+        }
+      } catch (err) {
+        if (!ignore) {
+          console.error('Error fetching published products:', err);
+          setError(err.response?.data?.message || 'Failed to load products. Please check server connection.');
+        }
+      } finally {
+        if (!ignore) {
+          setLoading(false);
+        }
+      }
+    };
+
+    loadProducts();
+
+    return () => {
+      ignore = true;
+    };
   }, []);
 
   // Filter & Sort logic

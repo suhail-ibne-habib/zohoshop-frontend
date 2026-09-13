@@ -1,6 +1,6 @@
-# CoHoShop - Frontend
+# Cohoshop - Frontend
 
-Welcome to the **CoHoShop** frontend repository. CoHoShop is a modern, fast, and responsive local marketplace platform designed to connect buyers and sellers seamlessly. 
+Welcome to the **Cohoshop** frontend repository. Cohoshop is a modern, fast, and responsive local marketplace platform designed to connect buyers and sellers seamlessly. 
 
 This repository contains the client-facing Next.js application, featuring robust authentication, real-time rich text editing for product listings, and a highly polished UI powered by Tailwind CSS.
 
@@ -22,11 +22,11 @@ src/
 ├── app/                  # Next.js App Router pages (routes, layout, page.jsx)
 │   ├── (auth)/           # Clerk authentication routes (sign-in, sign-up)
 │   ├── products/         # Public product browsing & details
-│   └── saler/            # Protected seller dashboard (add/manage products)
+│   └── seller/           # Protected seller dashboard (add/manage products)
 ├── components/           # Reusable UI components
 │   ├── home/             # Landing page components (TrendingListings, Header, etc.)
 │   ├── products/         # Product-specific components (ProductCard)
-│   ├── saler/            # Seller-specific forms and components
+│   ├── seller/           # Seller-specific forms and components
 │   └── ui/               # Base UI elements (buttons, inputs)
 └── lib/                  
     └── schemas/          # Zod validation schemas

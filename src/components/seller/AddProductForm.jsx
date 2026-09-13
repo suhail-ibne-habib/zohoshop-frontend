@@ -117,7 +117,7 @@ export default function AddProductForm() {
 
       const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
 
-      // 3. Send request using Axios (Axios automatically handles multipart/form-data boundary when headers Content-Type is omitted)
+      // 3. Send request using Axios
       const response = await axios.post(`${baseUrl}/product/create-product`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -142,12 +142,12 @@ export default function AddProductForm() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6 font-sans pb-12">
+    <div className="max-w-4xl mx-auto space-y-6 font-sans pb-12 w-full">
       {/* Global Success Banner */}
       {isSuccess && (
-        <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-xl flex items-start justify-between gap-3 text-emerald-800 shadow-sm animate-fadeIn">
+        <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-xl flex items-start justify-between gap-3 text-emerald-800 shadow-xs animate-fadeIn">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-emerald-100 rounded-lg text-emerald-600">
+            <div className="p-2 bg-emerald-100 rounded-lg text-emerald-600 shrink-0">
               <CheckCircle2 className="w-5 h-5" />
             </div>
             <div>
@@ -160,7 +160,7 @@ export default function AddProductForm() {
           <button
             type="button"
             onClick={() => setIsSuccess(false)}
-            className="text-xs text-emerald-700 hover:text-emerald-900 font-medium underline"
+            className="text-xs text-emerald-700 hover:text-emerald-900 font-medium underline shrink-0"
           >
             Dismiss
           </button>
@@ -169,23 +169,23 @@ export default function AddProductForm() {
 
       {/* Global Server Error Alert */}
       {serverError && (
-        <div className="p-4 bg-red-50 border border-red-200 rounded-xl flex items-start gap-3 text-red-800 shadow-sm animate-fadeIn">
+        <div className="p-4 bg-red-50 border border-red-200 rounded-xl flex items-start gap-3 text-red-800 shadow-xs animate-fadeIn">
           <AlertCircle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
-          <div className="flex-1">
+          <div className="flex-1 min-w-0">
             <h4 className="text-sm font-semibold">Error Submitting Form</h4>
-            <p className="text-xs text-red-600 mt-0.5">{serverError}</p>
+            <p className="text-xs text-red-600 mt-0.5 break-words">{serverError}</p>
           </div>
         </div>
       )}
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* Section 1: General Details */}
-        <Card>
-          <CardHeader className="flex flex-row items-center gap-2">
-            <Tag className="w-4 h-4 text-[#006877]" />
-            <CardTitle>Basic Details</CardTitle>
+        <Card className="border border-gray-200 shadow-xs rounded-xl overflow-hidden">
+          <CardHeader className="flex flex-row items-center gap-2 p-4 sm:p-6 bg-gray-50/50 border-b border-gray-100">
+            <Tag className="w-4 h-4 text-[#006877] shrink-0" />
+            <CardTitle className="text-base sm:text-lg font-bold text-gray-900">Basic Details</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="p-4 sm:p-6 space-y-4 sm:space-y-6">
             <FormField
               id="title"
               label="Product Title"
@@ -199,54 +199,58 @@ export default function AddProductForm() {
                 {...register('title')}
                 disabled={isSubmitting}
                 placeholder="e.g. Handmade Ceramic Coffee Mug (350ml)"
-                className={errors.title ? 'border-red-300 bg-red-50/30 focus-visible:ring-red-500' : ''}
+                className={`w-full ${errors.title ? 'border-red-300 bg-red-50/30 focus-visible:ring-red-500' : ''}`}
               />
             </FormField>
 
-            <FormField
-              id="stock"
-              label="Stock Quantity"
-              required
-              error={errors.stock}
-              hint="Number of items available"
-            >
-              <Input
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+              <FormField
                 id="stock"
-                type="number"
-                min="0"
-                {...register('stock')}
-                disabled={isSubmitting}
-                placeholder="1"
-                className={errors.stock ? 'border-red-300 bg-red-50/30 focus-visible:ring-red-500' : ''}
-              />
-            </FormField>
-
-            <FormField
-              id="availability"
-              label="Availability"
-              required
-              error={errors.availability}
-              hint="Specify the availability status of this item"
-            >
-              <select
-                id="availability"
-                {...register('availability')}
-                disabled={isSubmitting}
-                className={`flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${errors.availability ? 'border-red-300 bg-red-50/30 focus-visible:ring-red-500' : ''}`}
+                label="Stock Quantity"
+                required
+                error={errors.stock}
+                hint="Number of items available"
               >
-                <option value="true">Available</option>
-                <option value="false">Unavailable</option>
-              </select>
-            </FormField>
+                <Input
+                  id="stock"
+                  type="number"
+                  min="0"
+                  {...register('stock')}
+                  disabled={isSubmitting}
+                  placeholder="1"
+                  className={`w-full ${errors.stock ? 'border-red-300 bg-red-50/30 focus-visible:ring-red-500' : ''}`}
+                />
+              </FormField>
+
+              <FormField
+                id="availability"
+                label="Availability"
+                required
+                error={errors.availability}
+                hint="Specify the availability status"
+              >
+                <select
+                  id="availability"
+                  {...register('availability')}
+                  disabled={isSubmitting}
+                  className={`flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${
+                    errors.availability ? 'border-red-300 bg-red-50/30 focus-visible:ring-red-500' : ''
+                  }`}
+                >
+                  <option value="true">Available</option>
+                  <option value="false">Unavailable</option>
+                </select>
+              </FormField>
+            </div>
           </CardContent>
         </Card>
 
         {/* Section 2: Pricing & Discount Offers */}
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
+        <Card className="border border-gray-200 shadow-xs rounded-xl overflow-hidden">
+          <CardHeader className="flex flex-row items-center justify-between p-4 sm:p-6 bg-gray-50/50 border-b border-gray-100">
             <div className="flex items-center gap-2">
-              <DollarSign className="w-4 h-4 text-[#006877]" />
-              <CardTitle>Pricing & Offers</CardTitle>
+              <DollarSign className="w-4 h-4 text-[#006877] shrink-0" />
+              <CardTitle className="text-base sm:text-lg font-bold text-gray-900">Pricing & Offers</CardTitle>
             </div>
             {discountPercent !== null && (
               <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 border border-amber-200">
@@ -255,7 +259,7 @@ export default function AddProductForm() {
               </span>
             )}
           </CardHeader>
-          <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <CardContent className="p-4 sm:p-6 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
             <FormField
               id="price"
               label="Regular Price ($)"
@@ -273,7 +277,7 @@ export default function AddProductForm() {
                   {...register('price')}
                   disabled={isSubmitting}
                   placeholder="0.00"
-                  className={`pl-8 ${errors.price ? 'border-red-300 bg-red-50/30 focus-visible:ring-red-500' : ''}`}
+                  className={`pl-8 w-full ${errors.price ? 'border-red-300 bg-red-50/30 focus-visible:ring-red-500' : ''}`}
                 />
               </div>
             </FormField>
@@ -282,7 +286,7 @@ export default function AddProductForm() {
               id="salePrice"
               label="Sale Price ($)"
               error={errors.salePrice}
-              hint="Optional promotional price (must be less than regular price)"
+              hint="Optional promotional price"
             >
               <div className="relative">
                 <span className="absolute left-3.5 top-2.5 text-gray-400 text-sm">$</span>
@@ -294,7 +298,7 @@ export default function AddProductForm() {
                   {...register('salePrice')}
                   disabled={isSubmitting}
                   placeholder="Optional discount price"
-                  className={`pl-8 ${errors.salePrice ? 'border-red-300 bg-red-50/30 focus-visible:ring-red-500' : ''}`}
+                  className={`pl-8 w-full ${errors.salePrice ? 'border-red-300 bg-red-50/30 focus-visible:ring-red-500' : ''}`}
                 />
               </div>
             </FormField>
@@ -302,12 +306,12 @@ export default function AddProductForm() {
         </Card>
 
         {/* Section 3: Product Description */}
-        <Card>
-          <CardHeader className="flex flex-row items-center gap-2">
-            <FileText className="w-4 h-4 text-[#006877]" />
-            <CardTitle>Product Description</CardTitle>
+        <Card className="border border-gray-200 shadow-xs rounded-xl overflow-hidden">
+          <CardHeader className="flex flex-row items-center gap-2 p-4 sm:p-6 bg-gray-50/50 border-b border-gray-100">
+            <FileText className="w-4 h-4 text-[#006877] shrink-0" />
+            <CardTitle className="text-base sm:text-lg font-bold text-gray-900">Product Description</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-4 sm:p-6">
             <FormField
               id="description"
               label="Full Description"
@@ -332,18 +336,18 @@ export default function AddProductForm() {
         </Card>
 
         {/* Section 4: Media Gallery */}
-        <Card>
-          <CardHeader className="flex flex-row items-center gap-2">
-            <ImageIcon className="w-4 h-4 text-[#006877]" />
-            <CardTitle>Product Media & Gallery</CardTitle>
+        <Card className="border border-gray-200 shadow-xs rounded-xl overflow-hidden">
+          <CardHeader className="flex flex-row items-center gap-2 p-4 sm:p-6 bg-gray-50/50 border-b border-gray-100">
+            <ImageIcon className="w-4 h-4 text-[#006877] shrink-0" />
+            <CardTitle className="text-base sm:text-lg font-bold text-gray-900">Product Media & Gallery</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-6">
+          <CardContent className="p-4 sm:p-6 space-y-6">
             <FormField
               id="image"
               label="Main Product Cover Image"
               required
               error={errors.image}
-              hint="High resolution featured cover image for your product card"
+              hint="Featured cover image for your product card"
             >
               <Controller
                 name="image"
@@ -384,13 +388,13 @@ export default function AddProductForm() {
         </Card>
 
         {/* Bottom Actions Bar */}
-        <div className="flex items-center justify-between pt-4 border-t border-gray-200">
+        <div className="flex flex-col-reverse sm:flex-row items-center justify-between gap-3 pt-4 border-t border-gray-200">
           <Button
             type="button"
             variant="outline"
             disabled={isSubmitting}
             onClick={() => reset()}
-            className="flex items-center gap-1.5"
+            className="w-full sm:w-auto flex items-center justify-center gap-1.5"
           >
             <RefreshCw className="w-4 h-4 text-gray-500" />
             <span>Reset Form</span>
@@ -399,7 +403,7 @@ export default function AddProductForm() {
           <Button
             type="submit"
             disabled={isSubmitting}
-            className="flex items-center gap-2"
+            className="w-full sm:w-auto flex items-center justify-center gap-2 font-semibold px-6 bg-[#006877] hover:bg-[#005562] text-white"
           >
             {isSubmitting ? (
               <>

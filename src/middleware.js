@@ -1,7 +1,7 @@
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 import { NextResponse } from 'next/server';
 
-const isSellerRoute = createRouteMatcher(['/saler(.*)']);
+const isSellerRoute = createRouteMatcher(['/seller(.*)', '/saler(.*)']);
 
 export default clerkMiddleware(async (auth, req) => {
   if (isSellerRoute(req)) {
@@ -18,8 +18,8 @@ export default clerkMiddleware(async (auth, req) => {
     const rawRole = authObj?.sessionClaims?.role || authObj?.sessionClaims?.publicMetadata?.role || authObj?.sessionClaims?.metadata?.role;
     const userRole = typeof rawRole === 'object' && rawRole !== null ? rawRole.role : rawRole;
 
-    // If role is present and not saler/admin, redirect to homepage
-    if (userRole && userRole !== 'saler' && userRole !== 'admin') {
+    // If role is present and not seller/saler/admin, redirect to homepage
+    if (userRole && userRole !== 'seller' && userRole !== 'saler' && userRole !== 'admin') {
       return NextResponse.redirect(new URL('/', req.url));
     }
   }

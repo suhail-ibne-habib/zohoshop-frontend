@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { UploadCloud, X, Image as ImageIcon, CheckCircle, AlertTriangle } from 'lucide-react';
 
 export default function SingleImageUpload({
@@ -12,22 +12,22 @@ export default function SingleImageUpload({
 }) {
   const [isDragging, setIsDragging] = useState(false);
   const [fileError, setFileError] = useState(null);
-  const [objectUrl, setObjectUrl] = useState(null);
   const fileInputRef = useRef(null);
 
-  useEffect(() => {
+  const previewUrl = useMemo(() => {
     if (value instanceof File) {
-      const url = URL.createObjectURL(value);
-      setObjectUrl(url);
-      return () => {
-        URL.revokeObjectURL(url);
-      };
-    } else {
-      setObjectUrl(null);
+      return URL.createObjectURL(value);
     }
+    return typeof value === 'string' ? value : null;
   }, [value]);
 
-  const previewUrl = value instanceof File ? objectUrl : typeof value === 'string' ? value : null;
+  useEffect(() => {
+    return () => {
+      if (previewUrl && value instanceof File) {
+        URL.revokeObjectURL(previewUrl);
+      }
+    };
+  }, [previewUrl, value]);
 
   const handleFile = (file) => {
     setFileError(null);

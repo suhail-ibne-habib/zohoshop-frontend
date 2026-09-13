@@ -35,6 +35,15 @@ const formats = [
   'link',
 ];
 
+const emptySubscribe = () => () => {};
+function useHydrated() {
+  return React.useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false
+  );
+}
+
 export default function RichTextEditor({
   value = '',
   onChange,
@@ -43,12 +52,8 @@ export default function RichTextEditor({
   disabled = false,
 }) {
   const [editorMode, setEditorMode] = useState('visual'); // 'visual' | 'plain'
-  const [isMounted, setIsMounted] = useState(false);
+  const isMounted = useHydrated();
   const currentValue = value || '';
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
 
   const handleChange = (content) => {
     if (onChange) {

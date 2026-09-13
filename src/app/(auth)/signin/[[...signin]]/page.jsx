@@ -32,7 +32,7 @@ export default function SignInPage() {
                 footerActionLink: "text-primary hover:underline font-bold"
               }
             }}
-            fallbackRedirectUrl="/saler/dashboard"
+            fallbackRedirectUrl="/seller/dashboard"
           />
         </div>
       </main>

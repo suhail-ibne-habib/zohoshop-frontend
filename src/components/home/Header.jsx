@@ -11,7 +11,7 @@ export default function Header() {
       <header className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-200 shadow-sm hidden md:block">
         <div className="max-w-7xl mx-auto px-10 flex items-center justify-between h-16">
           <div className="text-2xl font-bold text-[#004ccd] mr-8 font-sans tracking-tight">
-            CoHoShop
+            Cohoshop
           </div>
           <nav className="flex-1 flex items-center space-x-6">
             <Link className="text-sm font-medium text-gray-600 hover:text-[#004ccd] transition-colors" href="/products">All Products</Link>
@@ -32,7 +32,7 @@ export default function Header() {
             <Show when="signed-in">
               <UserButton showName />
             </Show>
-            <Link className="bg-[#004ccd] text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors" href="/saler/products/add">
+            <Link className="bg-[#004ccd] text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors" href="/seller/products/add">
               Post Ad
             </Link>
           </div>
@@ -42,9 +42,9 @@ export default function Header() {
       {/* Mobile Top App Bar */}
       <header className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md shadow-sm flex items-center justify-between px-4 h-16 md:hidden">
         <div className="text-xl font-bold text-[#004ccd]">
-          CoHoShop
+          Cohoshop
         </div>
-        <Link className="bg-[#004ccd] text-white text-sm font-medium px-3 py-1.5 rounded-lg" href="/saler/products/add">
+        <Link className="bg-[#004ccd] text-white text-sm font-medium px-3 py-1.5 rounded-lg" href="/seller/products/add">
           Post Ad
         </Link>
       </header>

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
 import { useAuth } from '@clerk/nextjs';
@@ -27,37 +27,53 @@ export default function SellerProductsDashboardPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const fetchSellerProducts = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const token = await getToken();
-      const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
-      
-      const response = await axios.get(`${baseUrl}/product/my-products`, {
-        headers: {
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        },
-      });
+  const [refreshCount, setRefreshCount] = useState(0);
 
-      if (response.data?.data) {
-        setProducts(response.data.data);
-      }
-    } catch (err) {
-      console.error('Error fetching seller products:', err);
-      setError(
-        err.response?.data?.message ||
-          err.message ||
-          'Failed to load your seller products catalog.'
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
+  const fetchSellerProducts = useCallback(() => {
+    setLoading(true);
+    setRefreshCount((prev) => prev + 1);
+  }, []);
 
   useEffect(() => {
-    fetchSellerProducts();
-  }, []);
+    let ignore = false;
+
+    const loadProducts = async () => {
+      setError(null);
+      try {
+        const token = await getToken();
+        const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
+
+        const response = await axios.get(`${baseUrl}/product/my-products`, {
+          headers: {
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          },
+        });
+
+        if (!ignore && response.data?.data) {
+          setProducts(response.data.data);
+        }
+      } catch (err) {
+        if (!ignore) {
+          console.error('Error fetching seller products:', err);
+          setError(
+            err.response?.data?.message ||
+              err.message ||
+              'Failed to load your seller products catalog.'
+          );
+        }
+      } finally {
+        if (!ignore) {
+          setLoading(false);
+        }
+      }
+    };
+
+    loadProducts();
+
+    return () => {
+      ignore = true;
+    };
+  }, [getToken, refreshCount]);
 
   // Stats calculation
   const totalProducts = products.length;
@@ -82,7 +98,7 @@ export default function SellerProductsDashboardPage() {
           <Button
             variant="outline"
             size="sm"
-            onClick={fetchSellerProducts}
+            onClick={() => { setLoading(true); fetchSellerProducts(); }}
             disabled={loading}
             className="gap-1.5 text-xs"
           >
@@ -90,7 +106,7 @@ export default function SellerProductsDashboardPage() {
             <span>Refresh</span>
           </Button>
 
-          <Link href="/saler/products/add">
+          <Link href="/seller/products/add">
             <Button className="gap-2 text-xs font-semibold">
               <PlusCircle className="w-4 h-4" />
               <span>Add New Product</span>
@@ -172,10 +188,10 @@ export default function SellerProductsDashboardPage() {
               <div className="max-w-md space-y-1">
                 <h3 className="text-base font-bold text-gray-900">No products published yet</h3>
                 <p className="text-xs text-gray-500">
-                  You haven't listed any products. Publish your first item to start receiving local inquiries.
+                  You haven&apos;t listed any products. Publish your first item to start receiving local inquiries.
                 </p>
               </div>
-              <Link href="/saler/products/add">
+              <Link href="/seller/products/add">
                 <Button size="sm" className="gap-2 font-semibold">
                   <PlusCircle className="w-4 h-4" /> Add Product Now
                 </Button>

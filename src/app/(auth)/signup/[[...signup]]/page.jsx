@@ -33,7 +33,7 @@ export default function SignUpPage() {
               }
 
             }}
-            fallbackRedirectUrl="/saler/products/add"
+            fallbackRedirectUrl="/seller/products/add"
           />
         </div>
       </main>
