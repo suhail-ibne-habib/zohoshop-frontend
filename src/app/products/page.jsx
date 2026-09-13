@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import Header from '@/components/home/Header';
 import Footer from '@/components/home/Footer';
@@ -27,6 +27,12 @@ export default function ProductsPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [onlyOnSale, setOnlyOnSale] = useState(false);
   const [sortBy, setSortBy] = useState('newest');
+  const [refreshCount, setRefreshCount] = useState(0);
+
+  const fetchProducts = useCallback(() => {
+    setLoading(true);
+    setRefreshCount((prev) => prev + 1);
+  }, []);
 
   useEffect(() => {
     let ignore = false;
@@ -56,7 +62,7 @@ export default function ProductsPage() {
     return () => {
       ignore = true;
     };
-  }, []);
+  }, [refreshCount]);
 
   // Filter & Sort logic
   const filteredProducts = products
