@@ -3,10 +3,11 @@ import Header from '@/components/home/Header';
 import Hero from '@/components/home/Hero';
 import Categories from '@/components/home/Categories';
 import TrendingListings from '@/components/home/TrendingListings';
+import AdBanner from '@/components/home/AdBanner';
 import Footer from '@/components/home/Footer';
 
 export const metadata = {
-  title: 'CoHoShop Classifieds - Find what you need',
+  title: 'Cohoshop Classifieds - Find what you need',
   description: 'Connecting local communities to buy, sell, and trade with trust and transparency.',
 };
 
@@ -19,6 +20,7 @@ export default function HomePage() {
         <Hero />
         <Categories />
         <TrendingListings />
+        <AdBanner />
       </main>
       
       <Footer />
