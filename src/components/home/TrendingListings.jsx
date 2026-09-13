@@ -132,15 +132,15 @@ export default function TrendingListings() {
                     {isSale ? (
                       <>
                         <span className="text-xs font-bold text-[#006877]">
-                          ${Number(item.salePrice).toFixed(2)}
+                          GH₵ {Number(item.salePrice).toFixed(2)}
                         </span>
                         <span className="text-[10px] text-gray-400 line-through">
-                          ${Number(item.price).toFixed(2)}
+                          GH₵ {Number(item.price).toFixed(2)}
                         </span>
                       </>
                     ) : (
                       <span className="text-xs font-bold text-[#006877]">
-                        ${Number(item.price).toFixed(2)}
+                        GH₵ {Number(item.price).toFixed(2)}
                       </span>
                     )}
                   </div>

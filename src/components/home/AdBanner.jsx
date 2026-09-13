@@ -49,7 +49,14 @@ export default function AdBanner() {
               href="mailto:ads@cohoshop.com?subject=Advertise%20with%20Cohoshop"
               className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs sm:text-sm font-medium backdrop-blur-sm transition-colors border border-white/15"
             >
-              Contact Ad Team
+              Email Ad Team
+            </a>
+
+            <a
+              href="tel:0546713433"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600/90 hover:bg-emerald-600 text-white text-xs sm:text-sm font-semibold backdrop-blur-sm transition-colors border border-emerald-500/30"
+            >
+              Call Ad Team (0546713433)
             </a>
           </div>
         </div>

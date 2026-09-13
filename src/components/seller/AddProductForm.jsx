@@ -262,13 +262,13 @@ export default function AddProductForm() {
           <CardContent className="p-4 sm:p-6 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
             <FormField
               id="price"
-              label="Regular Price ($)"
+              label="Regular Price (GH₵)"
               required
               error={errors.price}
-              hint="Standard selling price"
+              hint="Standard selling price in Ghana Cedi"
             >
               <div className="relative">
-                <span className="absolute left-3.5 top-2.5 text-gray-400 text-sm">$</span>
+                <span className="absolute left-3 top-2.5 text-gray-500 text-xs font-bold">GH₵</span>
                 <Input
                   id="price"
                   type="number"
@@ -277,19 +277,19 @@ export default function AddProductForm() {
                   {...register('price')}
                   disabled={isSubmitting}
                   placeholder="0.00"
-                  className={`pl-8 w-full ${errors.price ? 'border-red-300 bg-red-50/30 focus-visible:ring-red-500' : ''}`}
+                  className={`pl-12 w-full ${errors.price ? 'border-red-300 bg-red-50/30 focus-visible:ring-red-500' : ''}`}
                 />
               </div>
             </FormField>
 
             <FormField
               id="salePrice"
-              label="Sale Price ($)"
+              label="Sale Price (GH₵)"
               error={errors.salePrice}
-              hint="Optional promotional price"
+              hint="Optional promotional price in Ghana Cedi"
             >
               <div className="relative">
-                <span className="absolute left-3.5 top-2.5 text-gray-400 text-sm">$</span>
+                <span className="absolute left-3 top-2.5 text-gray-500 text-xs font-bold">GH₵</span>
                 <Input
                   id="salePrice"
                   type="number"
@@ -298,7 +298,7 @@ export default function AddProductForm() {
                   {...register('salePrice')}
                   disabled={isSubmitting}
                   placeholder="Optional discount price"
-                  className={`pl-8 w-full ${errors.salePrice ? 'border-red-300 bg-red-50/30 focus-visible:ring-red-500' : ''}`}
+                  className={`pl-12 w-full ${errors.salePrice ? 'border-red-300 bg-red-50/30 focus-visible:ring-red-500' : ''}`}
                 />
               </div>
             </FormField>

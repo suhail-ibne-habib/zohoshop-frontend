@@ -42,15 +42,15 @@ export default function ProductCard({ product }) {
           {onsale && salePrice ? (
             <>
               <span className="text-sm font-extrabold text-[#006877]">
-                ${Number(salePrice).toFixed(2)}
+                GH₵ {Number(salePrice).toFixed(2)}
               </span>
               <span className="text-xs text-gray-400 line-through">
-                ${Number(price).toFixed(2)}
+                GH₵ {Number(price).toFixed(2)}
               </span>
             </>
           ) : (
             <span className="text-sm font-extrabold text-[#006877]">
-              ${Number(price).toFixed(2)}
+              GH₵ {Number(price).toFixed(2)}
             </span>
           )}
         </div>

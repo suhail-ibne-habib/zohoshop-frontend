@@ -9,9 +9,11 @@ import Footer from '@/components/home/Footer';
 import {
   ArrowLeft,
   Tag,
-  DollarSign,
+  Coins,
   User,
   Mail,
+  Phone,
+  MessageSquare,
   Calendar,
   Sparkles,
   Loader2,
@@ -95,6 +97,11 @@ export default function ProductDetailPage({ params }) {
 
   const allImages = [product.image, ...(gallery || [])].filter(Boolean);
 
+  const sellerEmail = owner?.email || 'seller@cohoshop.com';
+  const sellerPhone = owner?.phone || '0546713433';
+  const rawPhoneNum = sellerPhone.replace(/\s+/g, '');
+  const whatsappNum = rawPhoneNum.startsWith('0') ? `233${rawPhoneNum.substring(1)}` : rawPhoneNum;
+
   return (
     <div className="bg-gray-50 text-gray-900 antialiased min-h-screen flex flex-col pt-16 font-sans">
       <Header />
@@ -176,15 +183,15 @@ export default function ProductDetailPage({ params }) {
                   {onsale && salePrice ? (
                     <div className="flex items-baseline gap-2">
                       <span className="text-3xl font-extrabold text-[#006877]">
-                        ${Number(salePrice).toFixed(2)}
+                        GH₵ {Number(salePrice).toFixed(2)}
                       </span>
                       <span className="text-sm text-gray-400 line-through">
-                        ${Number(price).toFixed(2)}
+                        GH₵ {Number(price).toFixed(2)}
                       </span>
                     </div>
                   ) : (
                     <span className="text-3xl font-extrabold text-[#006877]">
-                      ${Number(price).toFixed(2)}
+                      GH₵ {Number(price).toFixed(2)}
                     </span>
                   )}
                 </div>
@@ -196,33 +203,60 @@ export default function ProductDetailPage({ params }) {
                 )}
               </div>
 
-              {/* Seller Information */}
-              <div className="pt-4 border-t border-gray-100 space-y-3">
+              {/* Seller Information & Contact */}
+              <div className="pt-4 border-t border-gray-100 space-y-4">
                 <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider">Seller Information</h4>
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-[#006877]/10 flex items-center justify-center text-[#006877] font-bold text-sm">
+                <div className="flex items-start gap-3 bg-gray-50/60 p-3 rounded-xl border border-gray-100">
+                  <div className="w-10 h-10 rounded-full bg-[#006877]/10 flex items-center justify-center text-[#006877] font-bold text-sm shrink-0">
                     <User className="w-5 h-5" />
                   </div>
-                  <div>
+                  <div className="min-w-0 space-y-1">
                     <h5 className="text-sm font-semibold text-gray-900">
-                      {owner?.fullName || owner?.email || 'Registered Local Seller'}
+                      {owner?.fullName || 'Registered Ghana Seller'}
                     </h5>
-                    <p className="text-xs text-gray-400 flex items-center gap-1">
+                    <p className="text-xs text-gray-600 flex items-center gap-1.5 truncate">
+                      <Mail className="w-3.5 h-3.5 text-[#006877] shrink-0" />
+                      <a href={`mailto:${sellerEmail}?subject=Inquiry about ${encodeURIComponent(title)}`} className="hover:underline text-gray-700 font-medium truncate">
+                        {sellerEmail}
+                      </a>
+                    </p>
+                    <p className="text-xs text-gray-600 flex items-center gap-1.5">
+                      <Phone className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                      <a href={`tel:${sellerPhone}`} className="hover:underline text-gray-900 font-bold">
+                        {sellerPhone}
+                      </a>
+                    </p>
+                    <p className="text-[11px] text-gray-400 flex items-center gap-1 pt-0.5">
                       <Calendar className="w-3 h-3" /> Listed on {new Date(createdAt).toLocaleDateString()}
                     </p>
                   </div>
                 </div>
 
-                {owner?.email && (
-                  <div className="pt-2">
-                    <a
-                      href={`mailto:${owner.email}?subject=Inquiry about ${encodeURIComponent(title)}`}
-                      className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-[#006877] text-white text-sm font-semibold rounded-lg hover:bg-[#004e5a] transition-all shadow-xs"
-                    >
-                      <Mail className="w-4 h-4" /> Contact Seller via Email
-                    </a>
-                  </div>
-                )}
+                {/* Contact Action Buttons */}
+                <div className="pt-1 flex flex-col gap-2.5">
+                  <a
+                    href={`mailto:${sellerEmail}?subject=Inquiry about ${encodeURIComponent(title)}`}
+                    className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-[#006877] text-white text-sm font-semibold rounded-xl hover:bg-[#004e5a] transition-all shadow-xs"
+                  >
+                    <Mail className="w-4 h-4" /> Contact Seller via Email
+                  </a>
+
+                  <a
+                    href={`tel:${sellerPhone}`}
+                    className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-emerald-600 text-white text-sm font-semibold rounded-xl hover:bg-emerald-700 transition-all shadow-xs"
+                  >
+                    <Phone className="w-4 h-4" /> Call Seller ({sellerPhone})
+                  </a>
+
+                  <a
+                    href={`https://wa.me/${whatsappNum}?text=Hi,%20I%20am%20interested%20in%20your%20product%20listing:%20${encodeURIComponent(title)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-200 hover:bg-emerald-100 text-xs font-bold transition-all"
+                  >
+                    <MessageSquare className="w-4 h-4 text-emerald-600" /> WhatsApp Seller ({sellerPhone})
+                  </a>
+                </div>
               </div>
             </div>
           </div>

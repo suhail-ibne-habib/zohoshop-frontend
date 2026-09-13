@@ -147,7 +147,7 @@ export default function SellerProductsDashboardPage() {
           <CardContent className="p-6 flex items-center justify-between">
             <div>
               <p className="text-xs font-semibold text-emerald-700 uppercase tracking-wider">Catalog Value</p>
-              <h3 className="text-3xl font-extrabold text-emerald-900 mt-1">${totalValue.toFixed(2)}</h3>
+              <h3 className="text-3xl font-extrabold text-emerald-900 mt-1">GH₵ {totalValue.toFixed(2)}</h3>
               <p className="text-[11px] text-emerald-600/80 mt-0.5">Estimated total inventory</p>
             </div>
             <div className="p-3 bg-emerald-100 rounded-xl text-emerald-700">
@@ -246,15 +246,15 @@ export default function SellerProductsDashboardPage() {
                         {item.onsale && item.salePrice ? (
                           <>
                             <div className="text-sm font-extrabold text-[#006877]">
-                              ${Number(item.salePrice).toFixed(2)}
+                              GH₵ {Number(item.salePrice).toFixed(2)}
                             </div>
                             <div className="text-xs text-gray-400 line-through">
-                              ${Number(item.price).toFixed(2)}
+                              GH₵ {Number(item.price).toFixed(2)}
                             </div>
                           </>
                         ) : (
                           <div className="text-sm font-extrabold text-[#006877]">
-                            ${Number(item.price).toFixed(2)}
+                            GH₵ {Number(item.price).toFixed(2)}
                           </div>
                         )}
                       </div>
